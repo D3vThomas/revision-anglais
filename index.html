@@ -1,392 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Révisions Vocabulaire • Informatique</title>
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-            rel="stylesheet"
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Recall — Anglais CESI</title>
+        <meta
+            name="description"
+            content="Entraînement au vocabulaire anglais MAALSI : mots, expressions et définitions du document CESI."
         />
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: "Inter", -apple-system, BlinkMacSystemFont,
-                    sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                overflow-x: hidden;
-            }
-
-            .app-container {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(20px);
-                border-radius: 24px;
-                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-                width: 100%;
-                max-width: 450px;
-                padding: 40px 30px;
-                position: relative;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                animation: slideUp 0.6s ease-out;
-            }
-
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .header {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            .title {
-                font-size: 28px;
-                font-weight: 700;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                margin-bottom: 8px;
-                letter-spacing: -0.5px;
-            }
-
-            .subtitle {
-                color: #64748b;
-                font-size: 14px;
-                font-weight: 500;
-            }
-
-            .mode-selector {
-                display: flex;
-                background: #f1f5f9;
-                border-radius: 16px;
-                padding: 4px;
-                margin-bottom: 32px;
-                position: relative;
-            }
-
-            .mode-btn {
-                flex: 1;
-                padding: 12px 16px;
-                border: none;
-                background: transparent;
-                border-radius: 12px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                position: relative;
-                z-index: 2;
-                color: #64748b;
-            }
-
-            .mode-btn.active {
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                color: white;
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-                transform: translateY(-1px);
-            }
-
-            .prompt-container {
-                text-align: center;
-                margin-bottom: 28px;
-                min-height: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .prompt {
-                font-size: 32px;
-                font-weight: 700;
-                color: #1e293b;
-                padding: 20px;
-                background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-                border-radius: 20px;
-                border: 2px solid #e2e8f0;
-                transition: all 0.3s ease;
-                min-width: 200px;
-                animation: fadeIn 0.5s ease-out;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-            }
-
-            .input-container {
-                position: relative;
-                margin-bottom: 24px;
-            }
-
-            .answer-input {
-                width: 100%;
-                padding: 16px 20px;
-                font-size: 16px;
-                border: 2px solid #e2e8f0;
-                border-radius: 16px;
-                background: #fafafa;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                font-weight: 500;
-            }
-
-            .answer-input:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-                background: white;
-                transform: translateY(-2px);
-            }
-
-            .feedback {
-                min-height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 24px;
-                font-weight: 600;
-                font-size: 16px;
-                border-radius: 12px;
-                padding: 12px;
-                transition: all 0.3s ease;
-            }
-
-            .feedback.correct {
-                background: linear-gradient(135deg, #10b981, #059669);
-                color: white;
-                animation: bounce 0.6s ease-out;
-            }
-
-            .feedback.incorrect {
-                background: linear-gradient(135deg, #ef4444, #dc2626);
-                color: white;
-                animation: shake 0.6s ease-out;
-            }
-
-            @keyframes bounce {
-                0%,
-                20%,
-                60%,
-                100% {
-                    transform: translateY(0);
-                }
-                40% {
-                    transform: translateY(-10px);
-                }
-                80% {
-                    transform: translateY(-5px);
-                }
-            }
-
-            @keyframes shake {
-                0%,
-                100% {
-                    transform: translateX(0);
-                }
-                10%,
-                30%,
-                50%,
-                70%,
-                90% {
-                    transform: translateX(-5px);
-                }
-                20%,
-                40%,
-                60%,
-                80% {
-                    transform: translateX(5px);
-                }
-            }
-
-            .actions {
-                display: flex;
-                gap: 12px;
-            }
-
-            .btn {
-                flex: 1;
-                padding: 14px 24px;
-                border: none;
-                border-radius: 16px;
-                font-size: 15px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-            }
-
-            .btn-primary {
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                color: white;
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            }
-
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-            }
-
-            .btn-secondary {
-                background: #f8fafc;
-                color: #64748b;
-                border: 2px solid #e2e8f0;
-            }
-
-            .btn-secondary:hover {
-                background: #f1f5f9;
-                transform: translateY(-1px);
-                border-color: #cbd5e1;
-            }
-
-            .btn:active {
-                transform: translateY(0);
-            }
-
-            @media (max-width: 480px) {
-                .app-container {
-                    padding: 30px 20px;
-                    margin: 10px;
-                }
-
-                .title {
-                    font-size: 24px;
-                }
-
-                .prompt {
-                    font-size: 24px;
-                    padding: 16px;
-                }
-            }
-
-            .floating-shapes {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: -1;
-            }
-
-            .shape {
-                position: absolute;
-                opacity: 0.1;
-                animation: float 6s ease-in-out infinite;
-            }
-
-            .shape:nth-child(1) {
-                top: 10%;
-                left: 10%;
-                animation-delay: 0s;
-            }
-
-            .shape:nth-child(2) {
-                top: 20%;
-                right: 10%;
-                animation-delay: 2s;
-            }
-
-            .shape:nth-child(3) {
-                bottom: 10%;
-                left: 20%;
-                animation-delay: 4s;
-            }
-
-            @keyframes float {
-                0%,
-                100% {
-                    transform: translateY(0px) rotate(0deg);
-                }
-                50% {
-                    transform: translateY(-20px) rotate(180deg);
-                }
-            }
-        </style>
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23102033'/%3E%3Cpath d='M11 29V11h10a6 6 0 010 12h-10m10 0 8 7' fill='none' stroke='%23c5f467' stroke-width='4'/%3E%3C/svg%3E"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script src="data.js" defer></script>
+        <script src="app.js" defer></script>
     </head>
     <body>
-        <div class="floating-shapes">
-            <div class="shape">💻</div>
-            <div class="shape">🚀</div>
-            <div class="shape">⚡</div>
+        <header>
+            <a class="brand" href="index.html"
+                ><span class="logo">r.</span> recall<span class="edition"
+                    >ANGLAIS / CESI</span
+                ></a
+            ><span id="save-status">Progression sur cet appareil</span>
+        </header>
+        <div class="shell">
+            <aside>
+                <p class="eyebrow">TON ESPACE DE RÉVISION</p>
+                <nav aria-label="Navigation principale">
+                    <button data-view="train" class="active">
+                        ↗ &nbsp; S’entraîner</button
+                    ><button data-view="library">▤ &nbsp; Le répertoire</button
+                    ><button data-view="stats">◷ &nbsp; Ma progression</button>
+                </nav>
+                <div class="aside-note">
+                    <span class="mini-logo">Aa</span
+                    ><strong>Un peu chaque jour.</strong>
+                    <p>
+                        Retrouve, vérifie, recommence. Les erreurs deviennent
+                        tes prochaines révisions.
+                    </p>
+                    <a href="source.pdf" target="_blank" rel="noopener"
+                        >Consulter le PDF source ↗</a
+                    >
+                </div>
+            </aside>
+            <main id="main"></main>
         </div>
-
-        <div class="app-container">
-            <div class="header">
-                <h1 class="title" id="testTitle">Test de vocabulaire</h1>
-                <h1 class="title">Révisions Vocab</h1>
-                <p class="subtitle">Informatique • Français ⇌ Anglais</p>
-            </div>
-
-            <div class="mode-selector" style="margin-bottom: 20px">
-                <button
-                    class="mode-btn testtype-btn active"
-                    data-type="mots"
-                    onclick="setTestType('mots')"
-                >
-                    <i class="fas fa-font"></i> Mots
-                </button>
-                <button
-                    class="mode-btn testtype-btn"
-                    data-type="expressions"
-                    onclick="setTestType('expressions')"
-                >
-                    <i class="fas fa-comment-dots"></i> Expressions
-                </button>
-            </div>
-
-            <div class="prompt-container">
-                <div id="prompt" class="prompt">Démarrer...</div>
-            </div>
-
-            <div class="input-container">
-                <input
-                    type="text"
-                    id="answer"
-                    class="answer-input"
-                    placeholder="Tapez votre réponse..."
-                    onkeydown="handleKey(event)"
-                    autocomplete="off"
-                />
-            </div>
-
-            <div id="feedback" class="feedback"></div>
-
-            <div class="actions">
-                <button class="btn btn-primary" onclick="checkAnswer()">
-                    <i class="fas fa-check"></i> Valider
-                </button>
-                <button class="btn btn-secondary" onclick="nextWord()">
-                    <i class="fas fa-forward"></i> Suivant
-                </button>
-            </div>
-        </div>
-
-        <script src="script.js"></script>
+        <footer>
+            MAALSI · 4e année
+            <span>50 mots · 51 expressions · 25 définitions</span>
+        </footer>
+        <noscript>Active JavaScript pour utiliser les jeux.</noscript>
     </body>
 </html>
